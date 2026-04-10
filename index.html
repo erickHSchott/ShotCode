@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShotCode| </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5; --secondary: #334155; --success: #10b981;
+            --bg: #f8fafc; --white: #ffffff; --dark: #1e293b;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--secondary); margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; }
+
+        header { 
+            background: linear-gradient(135deg, #1e1b4b, #4338ca); 
+            color: white; padding: 3rem 2rem; border-radius: 24px; 
+            text-align: center; margin-bottom: 2rem;
+        }
+
+        .unit { 
+            background: var(--white); border-radius: 20px; padding: 2rem; 
+            margin-bottom: 2rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        h2 { color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; }
+        
+        /* Sistema de Laboratorio */
+        .lab-card { 
+            background: var(--dark); color: #f8fafc; padding: 25px; 
+            border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--primary);
+            transition: all 0.4s ease;
+        }
+        .lab-card.locked { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
+        
+        textarea { 
+            width: 100%; height: 100px; background: #0f172a; color: #38bdf8; 
+            border: 1px solid #334155; border-radius: 10px; padding: 15px; 
+            font-family: 'Fira Code', monospace; margin-top: 15px; resize: none;
+        }
+        
+        .btn-check { 
+            background: var(--success); color: white; border: none; padding: 12px 25px; 
+            border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: 800;
+        }
+
+        /* Quiz */
+        #quizZone { display: none; }
+        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+        .quiz-card { background: #f1f5f9; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; }
+        .option { 
+            display: block; padding: 12px; background: white; border: 1px solid #cbd5e1; 
+            border-radius: 8px; margin-top: 10px; cursor: pointer;
+        }
+        .option:hover { background: #e0e7ff; }
+
+        .btn-final { 
+            background: var(--primary); color: white; padding: 25px; width: 100%; 
+            border: none; border-radius: 15px; font-size: 1.4rem; font-weight: 800; 
+            cursor: pointer; margin-top: 40px; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>ShotCode</h1>
+        <p>Entrenamiento de Alto Rendimiento en Desarrollo Web</p>
+    </header>
+
+    <form id="shotForm" action="https://formspree.io/f/TU_ID_AQUI" method="POST">
+        
+        <section class="unit">
+            <h2>Usuario</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                <input type="text" name="Nombre" placeholder="Nombre completo" required style="padding:15px; border-radius:10px; border:1px solid #ddd;">
+             
+            </div>
+            <input type="hidden" name="Puntaje_Total" id="scoreInput">
+        </section>
+
+        <section class="unit">
+            <h2>Laboratorio Técnico (18 Desafíos)</h2>
+            <div id="labsContainer"></div>
+        </section>
+
+        <section class="unit" id="quizZone">
+            <h2>Validación de Maestría</h2>
+            <div class="quiz-grid" id="questionsContainer"></div>
+            <button type="submit" class="btn-final" onclick="calculateFinal()">ENVIAR REPORTE DE RESULTADOS</button>
+        </section>
+    </form>
+</div>
+
+<script>
+    // 18 Desafíos detallados
+    const challenges = [
+        { id: 1, label: "Crea un encabezado h1 con el ID 'titulo-principal'.", keys: ["<h1", "id=", "titulo-principal"] },
+        { id: 2, label: "Define un div contenedor con la clase 'contenedor-shot'.", keys: ["<div", "class=", "contenedor-shot"] },
+        { id: 3, label: "Crea un input numérico que no permita valores menores a 18.", keys: ["type=", "number", "min=", "18"] },
+        { id: 4, label: "Inserta un input de tipo 'tel' con el ID 'contacto-emergencia'.", keys: ["type=", "tel", "id=", "contacto-emergencia"] },
+        { id: 5, label: "Crea un enlace (a) que abra 'google.com' en una pestaña nueva.", keys: ["href=", "target=", "_blank"] },
+        { id: 6, label: "Inserta una imagen con un texto alternativo (alt) que diga 'Logotipo'.", keys: ["<img", "alt=", "Logotipo"] },
+        { id: 7, label: "Crea un campo de texto simple que sea obligatorio (required).", keys: ["<input", "required"] },
+        { id: 8, label: "Define un bloque de navegación usando la etiqueta semántica nav.", keys: ["<nav>", "</nav>"] },
+        { id: 9, label: "Inserta la etiqueta principal de contenido 'main'.", keys: ["<main>", "</main>"] },
+        { id: 10, label: "Estructura una fila de tabla (tr) con una celda (td) adentro.", keys: ["<tr>", "<td>"] },
+        { id: 11, label: "Crea un input específico para correos electrónicos.", keys: ["type=", "email"] },
+        { id: 12, label: "Envuelve la palabra 'IMPORTANTE' en una etiqueta strong.", keys: ["<strong>", "IMPORTANTE"] },
+        { id: 13, label: "Inserta un salto de línea manual usando la etiqueta br.", keys: ["<br>"] },
+        { id: 14, label: "Crea un input con el texto sugerido (placeholder) 'Escribe aquí'.", keys: ["placeholder=", "Escribe aquí"] },
+        { id: 15, label: "Define una sección temática usando la etiqueta section.", keys: ["<section>", "</section>"] },
+        { id: 16, label: "Inserta un control de selección múltiple (checkbox).", keys: ["type=", "checkbox"] },
+        { id: 17, label: "Crea un pie de página usando la etiqueta semántica footer.", keys: ["<footer>", "</footer>"] },
+        { id: 18, label: "Crea el botón de envío del formulario (submit).", keys: ["type=", "submit"] }
+    ];
+
+    // 36 Preguntas detalladas
+    const questions = [
+        "¿El ID debe ser único para un solo elemento en todo el HTML?",
+        "¿Las clases (class) se pueden aplicar a varios elementos a la vez?",
+        "¿En CSS, el símbolo '#' se usa para seleccionar un ID?",
+        "¿En CSS, el símbolo '.' (punto) se usa para seleccionar una clase?",
+        "¿Un ID tiene más peso de especificidad que una clase?",
+        "¿HTML5 introdujo etiquetas semánticas como article y section?",
+        "¿type='tel' garantiza que el teclado numérico aparezca en móviles?",
+        "¿El atributo 'min' sirve para validar el valor más bajo en un número?",
+        "¿El atributo 'step' permite definir saltos (ej. 0.5) en los inputs?",
+        "¿El atributo 'required' detiene el envío si el campo está vacío?",
+        "¿'maxlength' limita el número de caracteres que el usuario escribe?",
+        "¿El atributo 'alt' es obligatorio para que una imagen sea accesible?",
+        "¿La etiqueta <main> representa el contenido central y único del sitio?",
+        "¿La etiqueta <nav> se utiliza para envolver los menús de navegación?",
+        "¿El uso de HTML semántico mejora el posicionamiento en buscadores?",
+        "¿<section> se usa para agrupar contenido relacionado lógicamente?",
+        "¿<footer> es la etiqueta correcta para el cierre de una página?",
+        "¿<aside> se usa para contenido lateral o tangencial?",
+        "¿La codificación UTF-8 es necesaria para mostrar tildes y eñes?",
+        "¿El <head> es donde se coloca el título de la pestaña del navegador?",
+        "¿El atributo 'href' es indispensable en una etiqueta de enlace <a>?",
+        "¿target='_blank' es la instrucción para abrir links en pestañas nuevas?",
+        "¿Los comentarios en HTML se escriben entre ?",
+        "¿La etiqueta <br> necesita una etiqueta de cierre opcional?",
+        "¿<strong> da importancia visual y semántica a un fragmento de texto?",
+        "¿Las tablas deben usarse solo para datos y no para maquetar el diseño?",
+        "¿<tr> representa una 'Table Row' o fila de tabla?",
+        "¿<td> representa una 'Table Data' o celda de datos?",
+        "¿La etiqueta <meta name='viewport'> es vital para el diseño responsivo?",
+        "¿type='date' muestra un calendario nativo en la mayoría de browsers?",
+        "¿El texto 'alt' es lo que leen los softwares para personas con ceguera?",
+        "¿La etiqueta <form> es necesaria para agrupar campos de datos?",
+        "¿'placeholder' es el texto que desaparece cuando el usuario escribe?",
+        "¿Un atributo añade propiedades extra a una etiqueta HTML?",
+        "¿El tipo 'checkbox' permite elegir varias opciones simultáneamente?",
+        "¿El botón 'submit' es el que dispara la acción definida en el form?"
+    ];
+
+    // Renderizar Desafíos
+    const labsContainer = document.getElementById('labsContainer');
+    challenges.forEach((c, i) => {
+        labsContainer.innerHTML += `
+            <div class="lab-card ${i > 0 ? 'locked' : ''}" id="lab-${c.id}">
+                <p><strong>Desafío ${c.id}:</strong> ${c.label}</p>
+                <textarea id="code-${c.id}" placeholder="Escribe tu solución aquí..."></textarea>
+                <button type="button" class="btn-check" onclick="verifyLab(${c.id})">Validar Nivel</button>
+            </div>
+        `;
+    });
+
+    // Renderizar Quiz
+    const qContainer = document.getElementById('questionsContainer');
+    questions.forEach((q, i) => {
+        qContainer.innerHTML += `
+            <div class="quiz-card">
+                <p>${i+1}. ${q}</p>
+                <label class="option"><input type="radio" name="q${i+1}" value="C" required> Verdadero / Correcto</label>
+                <label class="option"><input type="radio" name="q${i+1}" value="I"> Falso / Incorrecto</label>
+            </div>
+        `;
+    });
+
+    function verifyLab(id) {
+        const inputCode = document.getElementById(`code-${id}`).value;
+        const currentChallenge = challenges.find(c => c.id === id);
+        const isCorrect = currentChallenge.keys.every(k => inputCode.includes(k));
+
+        if(isCorrect) {
+            alert("¡Código validado con éxito!");
+            const nextLab = document.getElementById(`lab-${id + 1}`);
+            if(nextLab) {
+                nextLab.classList.remove('locked');
+                nextLab.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                document.getElementById('quizZone').style.display = 'block';
+                document.getElementById('quizZone').scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            alert("Error: El código no cumple con los requisitos técnicos del desafío.");
+        }
+    }
+
+    function calculateFinal() {
+        let score = 0;
+        for(let i=1; i<=36; i++) {
+            const val = document.querySelector(`input[name="q${i}"]:checked`);
+            if(val && val.value === "C") score++;
+        }
+        document.getElementById('scoreInput').value = `${score} / 36 aciertos`;
+        alert(`Entrenamiento completado. Tu reporte final es de ${score} aciertos. Se enviará ahora.`);
+    }
+</script>
+
+</body>
+</html>
