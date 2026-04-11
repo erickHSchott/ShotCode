@@ -1,18 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShotCode| </title>
+    <title>ShotCode | Academy</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4f46e5; --secondary: #334155; --success: #10b981;
-            --bg: #f8fafc; --white: #ffffff; --dark: #1e293b;
+            --bg: #f8fafc; --white: #ffffff; --dark: #1e293b; --accent: #f59e0b;
         }
 
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--secondary); margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--secondary); margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 1100px; margin: auto; }
 
         header { 
             background: linear-gradient(135deg, #1e1b4b, #4338ca); 
@@ -21,12 +22,25 @@
         }
 
         .unit { 
-            background: var(--white); border-radius: 20px; padding: 2rem; 
+            background: var(--white); border-radius: 20px; padding: 2.5rem; 
             margin-bottom: 2rem; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        h2 { color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; }
+        h2 { color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-top: 0; font-size: 1.8rem; }
+        h3 { color: var(--secondary); margin-top: 1.5rem; display: flex; align-items: center; gap: 10px; }
         
+        /* Teoría Expandida */
+        .theory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .theory-box { 
+            background: #f1f5f9; padding: 20px; border-radius: 12px; 
+            border-left: 4px solid var(--accent); font-size: 0.95rem;
+        }
+        .theory-box strong { color: var(--dark); display: block; margin-bottom: 5px; font-size: 1.1rem; }
+        .code-snippet { 
+            background: #0f172a; color: #a5f3fc; padding: 10px; 
+            border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.85rem; display: block; margin-top: 10px;
+        }
+
         /* Sistema de Laboratorio */
         .lab-card { 
             background: var(--dark); color: #f8fafc; padding: 25px; 
@@ -36,7 +50,7 @@
         .lab-card.locked { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
         
         textarea { 
-            width: 100%; height: 100px; background: #0f172a; color: #38bdf8; 
+            width: 100%; height: 80px; background: #0f172a; color: #38bdf8; 
             border: 1px solid #334155; border-radius: 10px; padding: 15px; 
             font-family: 'Fira Code', monospace; margin-top: 15px; resize: none;
         }
@@ -48,13 +62,13 @@
 
         /* Quiz */
         #quizZone { display: none; }
-        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+        .quiz-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .quiz-card { background: #f1f5f9; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; }
         .option { 
             display: block; padding: 12px; background: white; border: 1px solid #cbd5e1; 
-            border-radius: 8px; margin-top: 10px; cursor: pointer;
+            border-radius: 8px; margin-top: 10px; cursor: pointer; transition: 0.2s;
         }
-        .option:hover { background: #e0e7ff; }
+        .option:hover { background: #e0e7ff; border-color: var(--primary); }
 
         .btn-final { 
             background: var(--primary); color: white; padding: 25px; width: 100%; 
@@ -67,9 +81,65 @@
 
 <div class="container">
     <header>
-        <h1>ShotCode</h1>
-        <p>Entrenamiento de Alto Rendimiento en Desarrollo Web</p>
+        <h1>ShotCode | Academy</h1>
+        <p>Documentación Maestra y Entrenamiento de Alto Rendimiento</p>
     </header>
+
+    <section class="unit">
+        <h2>📚 Guía Maestra: Fundamentos de Desarrollo Web</h2>
+        
+        <h3>1. La Estructura Atómica (Tags y Atributos)</h3>
+        <div class="theory-grid">
+            <div class="theory-box">
+                <strong>Anatomía de una Etiqueta:</strong> Casi todas las etiquetas tienen apertura <code>&lt;etiqueta&gt;</code> y cierre <code>&lt;/etiqueta&gt;</code>. Los <strong>Atributos</strong> son propiedades que se escriben dentro de la apertura para dar instrucciones extra.
+                <code class="code-snippet">&lt;a href="link"&gt;Texto&lt;/a&gt;</code>
+            </div>
+            <div class="theory-box">
+                <strong>Comentarios y Notas:</strong> Para dejar notas que el navegador no lea, usamos <code>&lt;!-- esto es un comentario --&gt;</code>. Es vital para organizar tu código.
+            </div>
+        </div>
+
+        <h3>2. El Sistema de Identidad (ID vs Class)</h3>
+        <div class="theory-grid">
+            <div class="theory-box">
+                <strong>ID (ADN Único):</strong> Solo puede existir un ID con el mismo nombre en toda la página. Se usa para elementos únicos como el título principal. En CSS se llaman con <code>#</code>.
+            </div>
+            <div class="theory-box">
+                <strong>Class (Uniforme):</strong> Puedes repetir la misma clase en muchos elementos. En CSS se llaman con un punto <code>.</code>. El ID siempre es "más fuerte" que la clase (especificidad).
+            </div>
+        </div>
+
+        <h3>3. UX y Formularios (Inputs y Validación)</h3>
+        <div class="theory-grid">
+            <div class="theory-box">
+                <strong>Tipos de Input:</strong> El <code>type</code> define qué aparece: <code>checkbox</code> (casillas), <code>date</code> (calendario), <code>tel</code> (teléfono), <code>email</code> o <code>submit</code> (botón de envío). 
+                <code class="code-snippet">&lt;input type="checkbox"&gt;</code>
+            </div>
+            <div class="theory-box">
+                <strong>Validadores Automáticos:</strong> <code>required</code> obliga a llenar el campo. <code>placeholder</code> pone un texto sugerido. <code>min</code> pone un límite numérico y <code>maxlength</code> limita el texto.
+            </div>
+        </div>
+
+        <h3>4. Arquitectura Semántica (El orden de Google)</h3>
+        <div class="theory-grid">
+            <div class="theory-box">
+                <strong>Etiquetas de Organización:</strong> <code>&lt;main&gt;</code> es el corazón de la web. <code>&lt;nav&gt;</code> para menús. <code>&lt;section&gt;</code> y <code>&lt;article&gt;</code> para agrupar temas. <code>&lt;aside&gt;</code> para barras laterales y <code>&lt;footer&gt;</code> para el cierre.
+            </div>
+            <div class="theory-box">
+                <strong>El "Cerebro" (Head):</strong> En el <code>&lt;head&gt;</code> vive el <code>&lt;title&gt;</code> de la pestaña, la codificación <code>UTF-8</code> (para tildes y Ñ) y el <code>Viewport</code> para que la web sea responsiva (se vea bien en móviles).
+            </div>
+        </div>
+
+        <h3>5. Multimedia y Datos</h3>
+        <div class="theory-grid">
+            <div class="theory-box">
+                <strong>Enlaces e Imágenes:</strong> Los enlaces <code>&lt;a&gt;</code> usan <code>href</code>. Si agregas <code>target="_blank"</code>, abres en pestaña nueva. Las imágenes <code>&lt;img&gt;</code> <strong>deben</strong> llevar <code>alt</code> (texto alternativo) para ser accesibles.
+            </div>
+            <div class="theory-box">
+                <strong>Tablas:</strong> Se crean por filas <code>&lt;tr&gt;</code> (Table Row) y dentro llevan celdas <code>&lt;td&gt;</code> (Table Data). Solo se usan para datos estadísticos o listas, no para diseño.
+            </div>
+        </div>
+    </section>
 
     <form id="shotForm" action="https://formspree.io/f/TU_ID_AQUI" method="POST">
         
@@ -77,7 +147,6 @@
             <h2>Usuario</h2>
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
                 <input type="text" name="Nombre" placeholder="Nombre completo" required style="padding:15px; border-radius:10px; border:1px solid #ddd;">
-             
             </div>
             <input type="hidden" name="Puntaje_Total" id="scoreInput">
         </section>
@@ -88,7 +157,7 @@
         </section>
 
         <section class="unit" id="quizZone">
-            <h2>Quiz</h2>
+            <h2>Quiz Final</h2>
             <div class="quiz-grid" id="questionsContainer"></div>
             <button type="submit" class="btn-final" onclick="calculateFinal()">ENVIAR REPORTE DE RESULTADOS</button>
         </section>
@@ -96,7 +165,6 @@
 </div>
 
 <script>
-    // 18 Desafíos detallados
     const challenges = [
         { id: 1, label: "Crea un encabezado h1 con el ID 'titulo-principal'.", keys: ["<h1", "id=", "titulo-principal"] },
         { id: 2, label: "Define un div contenedor con la clase 'contenedor-shot'.", keys: ["<div", "class=", "contenedor-shot"] },
@@ -118,12 +186,11 @@
         { id: 18, label: "Crea el botón de envío del formulario (submit).", keys: ["type=", "submit"] }
     ];
 
-    // 36 Preguntas detalladas
     const questions = [
         "¿El ID debe ser único para un solo elemento en todo el HTML?",
         "¿Las clases (class) se pueden aplicar a varios elementos a la vez?",
         "¿En CSS, el símbolo '#' se usa para seleccionar un ID?",
-        "¿En CSS, el símbolo '.' (punto) se usa para seleccionar una clase?",
+        "¿En CSS, el símbolo '.' se usa para seleccionar una clase?",
         "¿Un ID tiene más peso de especificidad que una clase?",
         "¿HTML5 introdujo etiquetas semánticas como article y section?",
         "¿type='tel' garantiza que el teclado numérico aparezca en móviles?",
@@ -158,24 +225,22 @@
         "¿El botón 'submit' es el que dispara la acción definida en el form?"
     ];
 
-    // Renderizar Desafíos
     const labsContainer = document.getElementById('labsContainer');
     challenges.forEach((c, i) => {
         labsContainer.innerHTML += `
             <div class="lab-card ${i > 0 ? 'locked' : ''}" id="lab-${c.id}">
                 <p><strong>Desafío ${c.id}:</strong> ${c.label}</p>
-                <textarea id="code-${c.id}" placeholder="Escribe tu solución aquí..."></textarea>
+                <textarea id="code-${c.id}" placeholder="Escribe tu código aquí..."></textarea>
                 <button type="button" class="btn-check" onclick="verifyLab(${c.id})">Validar Nivel</button>
             </div>
         `;
     });
 
-    // Renderizar Quiz
     const qContainer = document.getElementById('questionsContainer');
     questions.forEach((q, i) => {
         qContainer.innerHTML += `
             <div class="quiz-card">
-                <p>${i+1}. ${q}</p>
+                <p><strong>${i+1}.</strong> ${q}</p>
                 <label class="option"><input type="radio" name="q${i+1}" value="C" required> Verdadero / Correcto</label>
                 <label class="option"><input type="radio" name="q${i+1}" value="I"> Falso / Incorrecto</label>
             </div>
@@ -188,7 +253,7 @@
         const isCorrect = currentChallenge.keys.every(k => inputCode.includes(k));
 
         if(isCorrect) {
-            alert("¡Código validado con éxito!");
+            alert("¡Desafío superado!");
             const nextLab = document.getElementById(`lab-${id + 1}`);
             if(nextLab) {
                 nextLab.classList.remove('locked');
@@ -198,7 +263,7 @@
                 document.getElementById('quizZone').scrollIntoView({ behavior: 'smooth' });
             }
         } else {
-            alert("Error: El código no cumple con los requisitos técnicos del desafío.");
+            alert("Error: El código no cumple con los requisitos técnicos.");
         }
     }
 
@@ -209,7 +274,7 @@
             if(val && val.value === "C") score++;
         }
         document.getElementById('scoreInput').value = `${score} / 36 aciertos`;
-        alert(`Entrenamiento completado. Tu reporte final es de ${score} aciertos. Se enviará ahora.`);
+        alert(`Entrenamiento Finalizado. Tu puntaje: ${score} / 36.`);
     }
 </script>
 
